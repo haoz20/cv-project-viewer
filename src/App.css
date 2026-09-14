@@ -106,9 +106,21 @@ body {
 .viewerHost { position: absolute; inset: 0; }
 .viewerHost canvas { display: block; width: 100% !important; height: 100% !important; }
 .viewLabel {
-  position: absolute; top: 8px; left: 10px; z-index: 5;
-  font-size: 11px; opacity: .55; text-transform: uppercase; letter-spacing: .04em;
+  position: absolute; top: 0; left: 0; right: 0; z-index: 5;
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  padding: 10px 14px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0));
   pointer-events: none;
+}
+.viewTitle {
+  font-size: 20px; font-weight: 700; letter-spacing: .02em;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+}
+.viewFileName {
+  font-size: 12px; opacity: .8;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
 }
 .drop {
   position: absolute; inset: 0; z-index: 4; display: flex; flex-direction: column;
