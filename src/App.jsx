@@ -84,7 +84,7 @@ export default function App() {
         />
         <ViewerPane
           ref={rightRef}
-          label="Open lid"
+          label="Opened lid"
           bgColor={bgColor}
           onInteractingChange={handleInteractingChange}
         />
