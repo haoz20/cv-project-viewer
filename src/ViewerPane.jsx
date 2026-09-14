@@ -138,7 +138,10 @@ const ViewerPane = forwardRef(function ViewerPane({ label, bgColor, onInteractin
 
   return (
     <div className="view" onDrop={onDrop} onDragOver={onDragOver}>
-      <div className="viewLabel">{label}{fileName ? ` · ${fileName}` : ''}</div>
+      <div className="viewLabel">
+        <span className="viewTitle">{label}</span>
+        {fileName && <span className="viewFileName">{fileName}</span>}
+      </div>
       <div className="viewerHost" ref={hostRef} />
       {status !== 'ready' && (
         <div className="drop">
