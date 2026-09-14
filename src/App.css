@@ -11,7 +11,7 @@ body {
 
 #app {
   display: grid;
-  grid-template-columns: 240px 1fr 240px;
+  grid-template-columns: max-content 1fr max-content;
   grid-template-areas: "left views right";
   height: 100%;
   gap: 8px;
@@ -30,6 +30,7 @@ body {
 }
 
 .panel {
+  width: 240px;
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
@@ -38,15 +39,44 @@ body {
   padding: 16px;
   overflow-y: auto;
   box-sizing: border-box;
+  transition: width .18s ease, padding .18s ease;
+}
+.panel.collapsed {
+  width: 40px;
+  padding: 12px 8px;
+  overflow: hidden;
 }
 .panel h2 {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: .05em;
   opacity: .6;
-  margin: 0 0 12px;
+  margin: 0;
   font-weight: 600;
+  white-space: nowrap;
 }
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.panel.collapsed .panelHeader { margin-bottom: 0; justify-content: center; }
+.collapseBtn {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .08);
+  color: #ddd;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+.collapseBtn:hover { background: rgba(255, 255, 255, .16); }
 .field { margin-bottom: 16px; }
 .field label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer; }
 .field input[type="color"] {
@@ -102,7 +132,9 @@ body {
     grid-auto-rows: auto 1fr auto;
     overflow-y: auto;
   }
-  .panel { max-height: 160px; }
+  .panel { width: auto; max-height: 160px; }
+  .panel.collapsed { width: auto; max-height: 40px; padding: 8px 12px; }
+  .panel.collapsed .panelHeader { justify-content: flex-start; }
 }
 
 @media (max-width: 640px) {
