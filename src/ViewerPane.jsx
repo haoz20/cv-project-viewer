@@ -2,6 +2,9 @@ import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 're
 import * as THREE from 'three';
 import * as GaussianSplats3D from '@mkkellogg/gaussian-splats-3d';
 
+const NORMAL_ZOOM_SPEED = 1.0;
+const FINE_ZOOM_SPEED = 0.15;
+
 function formatFor(name) {
   const n = name.toLowerCase();
   if (n.endsWith('.ply')) return GaussianSplats3D.SceneFormat.Ply;
@@ -93,6 +96,20 @@ const ViewerPane = forwardRef(function ViewerPane({ label, bgColor, onInteractin
     const ro = new ResizeObserver(() => resizeToHost());
     ro.observe(el);
     return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = hostRef.current;
+    if (!el) return undefined;
+    // Capture-phase so this runs before OrbitControls' own wheel listener on
+    // the canvas, letting us adjust zoomSpeed in time for that same event.
+    function onWheelCapture(e) {
+      const viewer = viewerRef.current;
+      if (!viewer || !viewer.controls) return;
+      viewer.controls.zoomSpeed = (e.metaKey || e.shiftKey) ? FINE_ZOOM_SPEED : NORMAL_ZOOM_SPEED;
+    }
+    el.addEventListener('wheel', onWheelCapture, { capture: true, passive: true });
+    return () => el.removeEventListener('wheel', onWheelCapture, { capture: true });
   }, []);
 
   useEffect(() => {

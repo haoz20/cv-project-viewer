@@ -12,6 +12,7 @@ export default function App() {
   const [orbitSpeed, setOrbitSpeed] = useState(0.2);
   const [leftOpen, setLeftOpen] = useState(true);
   const [rightOpen, setRightOpen] = useState(true);
+  const [layoutMode, setLayoutMode] = useState('single'); // 'single' | 'dual'
 
   useEffect(() => {
     let raf;
@@ -65,9 +66,27 @@ export default function App() {
               />
             </div>
             <div className="field">
+              <label>Layout</label>
+              <div className="segmented">
+                <button
+                  className={layoutMode === 'single' ? 'active' : ''}
+                  onClick={() => setLayoutMode('single')}
+                >
+                  1 panel
+                </button>
+                <button
+                  className={layoutMode === 'dual' ? 'active' : ''}
+                  onClick={() => setLayoutMode('dual')}
+                >
+                  2 panels
+                </button>
+              </div>
+            </div>
+            <div className="field">
               <ul className="hintList">
                 <li>drag = orbit</li>
                 <li>scroll = zoom</li>
+                <li>⌘/shift + scroll = precise zoom</li>
                 <li>right-drag = pan</li>
               </ul>
             </div>
@@ -76,18 +95,22 @@ export default function App() {
       </aside>
 
       <main id="views">
-        <ViewerPane
-          ref={leftRef}
-          label="Closed lid"
-          bgColor={bgColor}
-          onInteractingChange={handleInteractingChange}
-        />
-        <ViewerPane
-          ref={rightRef}
-          label="Opened lid"
-          bgColor={bgColor}
-          onInteractingChange={handleInteractingChange}
-        />
+        <div className="viewSlot">
+          <ViewerPane
+            ref={leftRef}
+            label="Closed lid"
+            bgColor={bgColor}
+            onInteractingChange={handleInteractingChange}
+          />
+        </div>
+        <div className={layoutMode === 'single' ? 'viewSlot hidden' : 'viewSlot'}>
+          <ViewerPane
+            ref={rightRef}
+            label="Opened lid"
+            bgColor={bgColor}
+            onInteractingChange={handleInteractingChange}
+          />
+        </div>
       </main>
 
       <aside className={`panel glass${rightOpen ? '' : ' collapsed'}`} id="rightPanel">
